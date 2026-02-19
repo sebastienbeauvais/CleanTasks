@@ -22,7 +22,7 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<IEnumerable<Category>> GetAllAsync()
     {
         // TODO: Implement - return all stored categories
-        throw new NotImplementedException();
+        return Task.FromResult(_categories.Values.AsEnumerable());
     }
 
     public Task<Category?> GetByNameAsync(string name)
