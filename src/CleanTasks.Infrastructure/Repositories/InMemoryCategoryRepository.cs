@@ -1,11 +1,14 @@
 using CleanTasks.Domain.Entities;
 using CleanTasks.Domain.Interfaces;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace CleanTasks.Infrastructure.Repositories;
 
 public class InMemoryCategoryRepository : ICategoryRepository
 {
     // TODO: Add a thread-safe collection to store categories
+    ConcurrentDictionary<string, Category> _categories = new ConcurrentDictionary<string, Category>();
 
     public Task<Category?> GetByIdAsync(Guid id)
     {
@@ -28,7 +31,8 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<Category> AddAsync(Category category)
     {
         // TODO: Implement - store the category and return it
-        throw new NotImplementedException();
+        _categories.GetOrAdd(category.Id.ToString(), category);
+        return Task.FromResult(category);
     }
 
     public Task<Category?> UpdateAsync(Category category)
