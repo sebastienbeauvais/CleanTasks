@@ -1,7 +1,6 @@
 using CleanTasks.Domain.Entities;
 using CleanTasks.Domain.Interfaces;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace CleanTasks.Infrastructure.Repositories;
 
@@ -13,7 +12,11 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<Category?> GetByIdAsync(Guid id)
     {
         // TODO: Implement - return category matching id, or null
-        throw new NotImplementedException();
+        if(_categories.ContainsKey(id.ToString()))
+        {
+            return Task.FromResult(_categories.GetValueOrDefault(id.ToString()));
+        }
+        return Task.FromResult<Category?>(null);
     }
 
     public Task<IEnumerable<Category>> GetAllAsync()
