@@ -1,7 +1,6 @@
 using CleanTasks.Domain.Entities;
 using CleanTasks.Domain.Interfaces;
 using System.Collections.Concurrent;
-using System.Xml.Serialization;
 
 namespace CleanTasks.Infrastructure.Repositories;
 
