@@ -46,8 +46,11 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<Category?> UpdateAsync(Category category)
     {
         // TODO: Implement - update existing category if found, return updated or null
-        if(category != null) //PLace hnolder
+        var oldCategory = _categories.Values.Where(x => x.Id == category.Id).FirstOrDefault();
+        
+        if (oldCategory != null)
         {
+            _categories.TryUpdate(category.Id.ToString(), category, oldCategory);
             return Task.FromResult(_categories.Values.Where(x => x.Name == category.Name).FirstOrDefault());
         }
         return Task.FromResult<Category?>(null);
