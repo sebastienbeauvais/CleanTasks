@@ -1,6 +1,7 @@
 using CleanTasks.Domain.Entities;
 using CleanTasks.Domain.Interfaces;
 using System.Collections.Concurrent;
+using System.Xml.Serialization;
 
 namespace CleanTasks.Infrastructure.Repositories;
 
@@ -28,7 +29,11 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<Category?> GetByNameAsync(string name)
     {
         // TODO: Implement - return category matching name (case-insensitive), or null
-        throw new NotImplementedException();
+        if (_categories.Values.Any(x => x.Name.ToLower() == name.ToLower()))
+        {
+            return Task.FromResult(_categories.Values.Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefault());
+        }
+        return Task.FromResult<Category?>(null);
     }
 
     public Task<Category> AddAsync(Category category)
@@ -41,12 +46,21 @@ public class InMemoryCategoryRepository : ICategoryRepository
     public Task<Category?> UpdateAsync(Category category)
     {
         // TODO: Implement - update existing category if found, return updated or null
-        throw new NotImplementedException();
+        if(category != null) //PLace hnolder
+        {
+            return Task.FromResult(_categories.Values.Where(x => x.Name == category.Name).FirstOrDefault());
+        }
+        return Task.FromResult<Category?>(null);
     }
 
     public Task<bool> DeleteAsync(Guid id)
     {
         // TODO: Implement - remove category by id, return true if found and removed
-        throw new NotImplementedException();
+        if (_categories.ContainsKey(id.ToString()))
+        {
+            _categories.TryRemove(id.ToString(), out _);
+            return Task.FromResult(true);
+        }
+        return Task.FromResult(false);
     }
 }
